@@ -56,7 +56,7 @@ void heapSort(int vet[],int tam){
 }
 
 void printVetor(int vetor[], int tam){
-    
+
     for (int i=0; i < tam; i++){
         printf("%i ", vetor[i]);
     }
@@ -73,7 +73,7 @@ int main()
     for (i=0;i<tam;i++){
         vet[i] = rand() % 100 + 1; //numeros aleatorios de 1 a 100
     }
-    
+
     printf("Vetor Desordenado: ");
     printVetor(vet, tam);
 
@@ -81,7 +81,7 @@ int main()
 
     printf("Vetor Ordenado: ");
     printVetor(vet, tam);
-    
+
 
     return 0;
 }
