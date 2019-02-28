@@ -70,10 +70,10 @@ int main(){
         vet[i] = rand() % 100 + 1; //numeros aleatorios de 1 a 100
     }
 
-    printf("Vetor Desordenado");
+    printf("Vetor Desordenado: ");
     printVetor(vet, tam);
 
-    mergeSort(vet, 0, tam);
+    mergeSort(vet, 0, tam-1);
 
     printf("Vetor Ordenado: ");
     printVetor(vet, tam);
