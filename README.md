@@ -1,4 +1,3 @@
 # AED2
-Repositório dedicado à programas desenvolvidos para a matéria Análise e Estrutura de Dados II
 
-e EU ESTOU TESTANDO UM COMANDO
+Repositório criado para armazenar os programas da Disciplina de AED2 ministrada pelo Profº Jucimar Junior no semestre 2019/1.
