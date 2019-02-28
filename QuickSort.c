@@ -1,73 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
-QUICKSORT FUNCIONA ASSIM:
-TENDO UM VETOR DESORDENADO
-ESCOLHE-SE UM PIVO
-DESSE PIVO PEGA-SE UM NUMERO MAIOR QUE ELE A ESQUERDA
-DESSE PIVO PEGA-SE UM NUMERO MENOR QUE ELE A DIREITA
-TROCA-SE ESSES DOIS NUMEROS
-RECURSIVAMENTE FACA COM AS DUAS METADES (COMECO ATE O NUMERO PEGO A DIREITAA) E (NUMERO PEGO A ESQUERDA ATE O FIM)
+void QuickSort(int vetor[], int inicio, int fim){
+  int i, j, pivo;
+  i = inicio; // i recebe o começo do Vetor
+  j = fim; // j recebe a posição final do Vetor
+  pivo = vetor[(inicio + fim)/2]; //pivo recebe uma posição no meio do vetor
 
-*/
+    while(i <= j){ // enquanto a posição inicial for menor ou igual a final
 
-void quicksort(int vet[], int com, int fim)
-{
-	int i, j, pivo, aux;
-	i = com;
-	j = fim-1;
-	pivo = vet[(com + fim) / 2]; //PONTO MEDIO
-	while(i <= j) //ISSO GARANTIRA QUE OS DOIS PONTOS NAO SE CRUZEM
-	{
-		while(vet[i] < pivo && i < fim) //IR ATE ENCONTRAR O VALOR MAIOR QUE O PIVO A ESQUERDA
-		{
-			i++;
-		}
-		while(vet[j] > pivo && j > com) //IR ATE ENCONTRAR O VALOR MENOR QUE O PIVO A DIREITA
-		{
-			j--;
-		}
-		if(i <= j) //SE NAO TIVEREM SE CRUZADO, TROCAR
-		{
-			aux = vet[i];
-			vet[i] = vet[j];
-			vet[j] = aux;
-			i++;
-			j--;
-		}
-	}
-	if(j > com)
-		quicksort(vet, com, j+1);
-	if(i < fim)
-		quicksort(vet, i, fim);
-}
+        while(vetor[i] < pivo){ // se o elemento da posição i é menor que o pivo vá para a próxima posição
+          i++;
+        }
 
-void printVetor(int vetor[], int tam){
-    
-    for (int i=0; i < tam; i++){
-        printf("%i ", vetor[i]);
+        while (vetor[j] > pivo){ // se o elemento da posição j for maior que o pivo vá para a a próxima posição
+          j--;
+        }
+        // nesse ponto ele deve ter armazenado em i a posição de um elemento maior que o PIVO
+        // e em j a posição de um elemento menor que o PIVO
+        // case nenhum elemento maior ou menor que o pivo seja encontrado o vetor está ordenado e
+        // o valor de i será meior que o valor de J
+        if(i <= j){ // se o a posição i for menor ou igual a posição j
+          // realiza a troca do valor maior antes do pivo com o valor menor depois do PIVO
+          int a = vetor[i];
+          vetor[i] = vetor[j];
+          vetor[j] = a;
+          i ++;
+          j --;
+        }
+
+        // chama a função recursivamente para a parte anteriror ao PIVO
+        if (inicio < j){
+          // passa o mesmo vetor como parametro com o inicio marcado como o inicio do Vetor
+          // e o final marcado como j que nesse momento é < i e possui o ultimo elemento antes do pivo atual
+          QuickSort(vetor, inicio, j);
+        }
+        // chama a função recursivamente para a parte anterior ao PIVO
+        if (i < fim){
+        // passa o mesmo vetor como parâmetro com o inicio marcado com i que nesse momento tem a posição posterior a do PIVO
+        // e passa como fim a posição final do Vetor
+          QuickSort(vetor, i, fim);
+        }
     }
-    printf("\n");
 }
 
+void printVetor (int vetor[], int tam){
+  for (int i = 0; i < tam; i++){
+    printf("%i ", vetor[i]);
+  }
+  printf("\n");
+}
 
 int main(){
+  int vetor[12], tam = 12;
 
-    int vet[12];
-    int tam = 12;
+  for (int i = 0; i < tam; i++){
+    vetor[i] = rand() % 100 + 1; // popula o vetor com numeors "aleatórios de 1 a 100"
+  }
 
-    for (int i=0;i<tam;i++){
-        vet[i] = rand() % 100 + 1; //numeros aleatorios de 1 a 100
-    }
+  printf("Vetor Desordenado: ");
+  printVetor(vetor, tam);
 
-    printf("Vetor Desordenado: ");
-    printVetor(vet, tam);
+  QuickSort(vetor, 0, tam);
 
-    quicksort(vet,0,tam);
-
-    printf("Vetor Ordenado:");
-    printVetor(vet, tam);
-
-    return 0;
+  printf("Vetor Ordenado: ");
+  printVetor(vetor, tam);
 }
