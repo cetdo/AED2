@@ -4,7 +4,7 @@
 void QuickSort(int vetor[], int inicio, int fim){
   int i, j, pivo;
   i = inicio; // i recebe o começo do Vetor
-  j = fim; // j recebe a posição final do Vetor
+  j = fim - 1; // j recebe a posição final do Vetor
   pivo = vetor[(inicio + fim)/2]; //pivo recebe uma posição no meio do vetor
 
     while(i <= j){ // enquanto a posição inicial for menor ou igual a final
