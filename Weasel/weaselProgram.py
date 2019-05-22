@@ -10,7 +10,7 @@ goal = list(input('ENTRE COM A PALAVARA A SER GERADA: ').upper())   # Recebe uma
                                                                     # deixa-a toda em caixa alta e cria converte-a ao tipo lista
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "        # Alfabeto com todos os símbolos possíveis (letras em caixa alta + espaço em branco)
 nChildren = 100                                # Número de filhos por geração
-mut_rate = 0.1                                 # Taxa de mutação: probabilidade que uma letra vai mudar
+mutRate = 0.1                                 # Taxa de mutação: probabilidade que uma letra vai mudar
 best_offspring = []                             # Variável contendo os melhores filhos de cada geração
                                                 # Contém uma lista vazia quando entra no laço pela primeira vez
 
@@ -44,27 +44,28 @@ while best_offspring != goal: # enquanto o melhor filho for diferente do objetiv
         kidChanged = False # Valor booleano que diz se uma palavra filha gerada nessa geração mudou ou não com relação ao pai
                             # ou seja, houve mutação
 
-        for pos in range(len(kid)):
+        for pos in range(len(kid)): # Para cada numero (pos) de 0 até (tamanho do filho gerado) faça:
 
-            # Let residue mutate with probability mut_rate
-            if random.random() < mut_rate:
-                kidChanged = True
-                nMutation += 1
+            # Deixa o filho sofrer mutação com a probabilidate (em porcentagem) mutRate
+            if random.random() < mutRate: # Se um número aleatório for menor que a taxa de mutação faça:
 
-                # Randomly select new symbol (that is different from the one already present)
-                old_symbol = parent[pos]
-                possible_new_symbols = set(alphabet) - set(old_symbol)
-                new_symbol = random.choice(list(possible_new_symbols))
+                kidChanged = True # Sinaliza que houve mutação no filho
+                nMutation += 1 # Adiciona mais um ao contador de filhos com mutação
 
-                # Mutate kid
-                kid[pos] = new_symbol
+                # Escolhe aleatóriamente um novo símbolo do alfabeto que é diferente do símbolo atual na posição
+                oldSymbol = parent[pos] # Variável recebe o símbolo antigo
+                possNewSymb = set(alphabet) - set(oldSymbol) # Cria uma lista com todos os possíveis novos símbolos
+                newSymbol = random.choice(list(possNewSymb)) # Variável recebe o novo símbolo
 
-                # Check if mutation was beneficial, detrimental, or neutral and update count
-                if old_symbol == goal[pos]:               # Correct letter has been changed: detrimental
+                # Muda o filho
+                kid[pos] = newSymbol # Filho na posição pos recebe o novo símbolo
+
+                # Checa se a mutação foi benéfica, maléfica ou neutra e incrementa o respectivo contador
+                if oldSymbol == goal[pos]:               # Uma letra correta foi alterada: mutação maléfica
                     nBad += 1
-                elif new_symbol == goal[pos]:             # Incorrect letter has been changed to correct: beneficial
+                elif newSymbol == goal[pos]:             # Uma letra incorreta foi alterada para uma correta: mutação benéfica
                     nGood += 1
-                else:                                           # Incorrect letter has been changed to other incorrect letter: neutral
+                else:                                           # Uma letra incorreta foi alterada para outra letra incorreta: mutação neutra
                     nNeutral += 1
 
         # If kid was mutated, then it no longer looks like its parent
