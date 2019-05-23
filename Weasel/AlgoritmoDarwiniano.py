@@ -11,8 +11,9 @@ def execute(goal):
     exits = []
     # Alfabeto com todos os símbolos possíveis (letras em caixa alta + espaço em branco)
     # Alfabeto com as letras + espaço em branco para gerar a String
-    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
-    nChildren = 500                                # Número de filhos por geração
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,.!? "
+    # Número de filhos por geração
+    nChildren = len(goal) * 50
     # Taxa de mutação: probabilidade que uma letra vai mudar 0 < mutRate =< 1
     mutRate = 0.10
     # Variável contendo os melhores filhos de cada geração
@@ -117,13 +118,18 @@ def execute(goal):
 
         # Imprime o processo
         # Fitness é o indivíduo mais semelhança ao objetivo
-        fitness = (len(goal)-smallestDiff)/len(goal)
+        fitness = (len(goal)-smallestDiff)/len(goal) * 100
+        goodFraction = badFraction = neutralFraction = 0.0
         # Fração boa recebe a quantidade de indivíduos com mutação boa sobre o total de mutações
-        goodFraction = nGood/nMutation
-        # Fração ruim recebe a quantidade de mutações ruins sobre o total de mutações
-        badFraction = nBad/nMutation
-        # Fração neutra recebe a quantidade de mutações neutras sobre as mutações totais
-        neutralFraction = nNeutral/nMutation
+        trial = nGood + nBad + nNeutral
+        if(trial != 0.0):
+
+            goodFraction = nGood/nMutation * 100
+            # Fração ruim recebe a quantidade de mutações ruins sobre o total de mutações
+            badFraction = nBad/nMutation * 100
+            # Fração neutra recebe a quantidade de mutações neutras sobre as mutações totais
+            neutralFraction = nNeutral/nMutation * 100
+
         exit = ""  # String de saída recebe palavra vazia
 
         # Para cada índoce (pos) de 0 até o tamanho do objetivo, faça:
@@ -137,8 +143,10 @@ def execute(goal):
                 exit += bestOffspring[pos].lower()
         # exits.append("\n-------Geração: %4d   : %s -------\nTaxas de mutação dos filhos:\n Elementos Diferentes: %3d   Fit: %.4f   Boa: %.4f  Ruim: %.4f  Neutra: %.4f  Indiferente: %3d" %
               # (gen, exit, smallestDiff, fitness, goodFraction, badFraction, neutralFraction, nSame))  # Imprime os dados coletados
-        exits.append("-------Geração: %4d   : %s -------|| Diferenças: %3d   Fit: %.4f   Boa: %.4f  Ruim: %.4f  Neutra: %.4f  Indiferente: %3d" %
+        exits.append("-------Geração: %4d   : %s -------|| Diferenças: %3d   Fit: %.1f   Boa: %.1f  Ruim: %.1f  Neutra: %.1f  Imutados: %3d" %
                      (gen, exit, smallestDiff, fitness, goodFraction, badFraction, neutralFraction, nSame))
+        print("-------Geração: %4d   : %s -------|| Diferenças: %3d   Fit: %.1f   Boa: %.1f  Ruim: %.1f  Neutra: %.1f  Imutados: %3d" %
+              (gen, exit, smallestDiff, fitness, goodFraction, badFraction, neutralFraction, nSame))
     return exits
 
 
@@ -150,6 +158,7 @@ def execute(goal):
 class Application:
     def __init__(self, master=None):
         self.fontePadrao = ("Arial", "16", "bold")
+
         self.primeiroContainer = Frame(master)
         self.primeiroContainer["pady"] = 20
         self.primeiroContainer.pack()
@@ -198,6 +207,7 @@ class Application:
             self.quartoContainer, yscrollcommand=self.scrollbar.set, xscrollcommand=self.scrollbar2.set)
         self.saida.pack(side=LEFT)
         self.saida["width"] = 150
+        self.saida["height"] = 100
         self.saida["font"] = ("Arial", 12)
         self.scrollbar.config(command=self.saida.yview)
         self.scrollbar2.config(orient=HORIZONTAL, command=self.saida.xview)
@@ -205,6 +215,7 @@ class Application:
     # Método verificar senha
 
     def gerarChave(self):
+
         goal = list(self.objetivo.get().upper())
         teste = execute(goal)
         self.saida.delete(0, self.saida.size()-1)
@@ -213,5 +224,6 @@ class Application:
 
 
 root = Tk()
+root.title('PROGRAMA DA DONINHA')
 Application(root)
 root.mainloop()
