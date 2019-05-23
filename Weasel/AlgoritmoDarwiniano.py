@@ -212,8 +212,6 @@ class Application:
         self.scrollbar.config(command=self.saida.yview)
         self.scrollbar2.config(orient=HORIZONTAL, command=self.saida.xview)
 
-    # Método verificar senha
-
     def gerarChave(self):
 
         goal = list(self.objetivo.get().upper())
